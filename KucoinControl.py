@@ -58,6 +58,10 @@ def sell_etn():
   print('Selling {} ETN For {} Satoshi Each'.format(ETN,tick['sell']*1e8))
   sold = client.create_sell_order('ETN-BTC', tick['sell'], ETN)
   print(sold)
+ elif balance < ETN and balance > 0:
+  print('Selling {} ETN For {} Satoshi Each'.format(balance,tick['sell']*1e8))
+  sold = client.create_sell_order('ETN-BTC', tick['sell'], balance)
+  print(sold)
  else:
   print('Not Enough Balance For Trading Routine. Instructing Program To Exit')
   exit()
@@ -65,11 +69,16 @@ def sell_etn():
 def buy_etn():
  tick = client.get_tick('ETN-BTC')
  balance = client.get_coin_balance('BTC')
+ balance_etn = client.get_coin_balance('ETN')
  ETN = pickle.load(open('Etn.vnm','rb'))
  if tick['buy']*ETN <= balance:
   print('Buying {} ETN For {} Satoshi Each'.format(ETN,tick['buy']*1e8))
-  sold = client.create_sell_order('ETN-BTC', tick['sell'], balance)
-  print(sold)
+  bought = client.create_buy_order('ETN-BTC', tick['buy'], tick['buy']*ETN)
+  print(bought)
+ elif ticktick['buy']*(ETN-balance_etn) <= balance:
+  print('Buying {} ETN For {} Satoshi Each'.format((ETN-balance_etn),tick['buy']*1e8))
+  bought = client.create_buy_order('ETN-BTC', tick['buy'], tick['buy']*(ETN-balance_etn))
+  print(bought)
  else:
   print('Not Enough Balance For Trading Routine. Instructing Program To Exit')
   exit()
@@ -87,14 +96,14 @@ while True:
    print('>>: [SELL] Waiting For Price Flux')
    time.sleep(TIMER)
  elif trade == 'Buy':
-  should_buy = calc_buy():
-   if should_buy[0] == True:
-    print('Buying ETN At {} Satoshi'.format(should_buy[1]))
-    transaction = buy_etn()
-    time.sleep(TIMER)
-   else:
-    print('>>: [BUY] Waiting For Price Flux')
-    time.sleep(TIMER)
+  should_buy = calc_buy()
+  if should_buy[0] == True:
+   print('Buying ETN At {} Satoshi'.format(should_buy[1]))
+   transaction = buy_etn()
+   time.sleep(TIMER)
+  else:
+   print('>>: [BUY] Waiting For Price Flux')
+   time.sleep(TIMER)
  else:
   print('>>: Something Has Fucked Up, Waiting Timer Then Trying Again')
   time.sleep(TIMER)
