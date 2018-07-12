@@ -10,7 +10,8 @@ except Exception as Pickle_Error:
  if 'Etn.vnm' in Pickle_Error:
   print('We Need A New File That Tells Us How Much ETN To Trade.')
   print('Enter The Total ETN To Trade Please As A Number Only! Seriously Or This Will Break.')
-  ETN = input('>>: ')
+  ETN_TOTAL = input('>>: ')
+  ETN = int(ETN_TOTAL)
   pickle.dump(ETN,open('Etn.vnm','wb'))
   print('File Saved, Thank You.')
  else:
